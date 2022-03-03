@@ -1,31 +1,47 @@
-[![Build Status](https://travis-ci.org/microservices-demo/microservices-demo.svg?branch=master)](https://travis-ci.org/microservices-demo/microservices-demo)
+# Prerequisites
 
-# Sock Shop : A Microservice Demo Application
+## 1. Create a new 2 nodes EKS cluster
 
-The application is the user-facing part of an online shop that sells socks. It is intended to aid the demonstration and testing of microservice and cloud native technologies.
+-   Active AWS Cloud account and the following CLI tools installed
+    -   [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+    -   [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html)
+    -   [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
-It is built using [Spring Boot](http://projects.spring.io/spring-boot/), [Go kit](http://gokit.io) and [Node.js](https://nodejs.org/) and is packaged in Docker containers.
+```bash
+# login to AWS
+aws configure
 
-You can read more about the [application design](./internal-docs/design.md).
+# create new Managed nodes cluster (not the Fargate), this will create 2 nodes cluster (m5.larger)
+eksctl create cluster --name pixiecluster --region us-east-1
 
-## Deployment Platforms
+# download correct kubeconfig
+eksctl utils write-kubeconfig --cluster=pixiecluster
 
-The [deploy folder](./deploy/) contains scripts and instructions to provision the application onto your favourite platform. 
+# confirm can connect to the cluster
+kubectl get nodes -o wide
+```
 
-Please let us know if there is a platform that you would like to see supported.
+## 2. Sign up for Free New Relic One account
 
-## Bugs, Feature Requests and Contributing
+-   Sign up for New Relic One account for free [here](https://newrelic.com/signup) and get your Ingest API key by:
+    -   Create new Open https://one.newrelic.com/api-keys
+    -   Click on `Create a key`, select `Ingest - License` and give it a name
+    -   Click on 3 dots and select `Copy key`, you will need this during your hands on workshop
 
-We'd love to see community contributions. We like to keep it simple and use Github issues to track bugs and feature requests and pull requests to manage contributions. See the [contribution information](.github/CONTRIBUTING.md) for more information.
+## 3. Deploy Wavesocks application to your cluster
 
-## Screenshot
+-   Deploy this [e-commerce microservice application](https://github.com/nvhoanganh/nvhoanganh/blob/master/internal-docs/design.md) to the cluster
 
-![Sock Shop frontend](https://github.com/microservices-demo/microservices-demo.github.io/raw/master/assets/sockshop-frontend.png)
+```bash
+# create new namespace
+kubectl create namespace sock-shop && kubectl apply -f "https://raw.githubusercontent.com/nvhoanganh/nvhoanganh/master/deploy/kubernetes/complete-demo.yaml" --namespace=sock-shop
 
-## Visualizing the application
+# make sure all containers are running properly
+kubectl get pod --namespace=sock-shop
 
-Use [Weave Scope](http://weave.works/products/weave-scope/) or [Weave Cloud](http://cloud.weave.works/) to visualize the application once it's running in the selected [target platform](./deploy/).
+# get the external IP of the front-end service
+kubectl get service --watch --namespace=sock-shop
 
-![Sock Shop in Weave Scope](https://github.com/microservices-demo/microservices-demo.github.io/raw/master/assets/sockshop-scope.png)
-
-## 
+```
+- open `http://<EXTERNAL-IP>` and make sure you can see the application
+![](screenshots/homepage.png)
