@@ -266,6 +266,7 @@ spec:
       containers:
       - name: front-end
         image: weaveworksdemos/front-end:0.3.12
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: 300m
@@ -338,6 +339,7 @@ spec:
       containers:
       - name: orders
         image: weaveworksdemos/orders:0.4.7
+        imagePullPolicy: Always
         env:
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
@@ -705,6 +707,7 @@ spec:
       containers:
       - name: shipping
         image: weaveworksdemos/shipping:0.4.8
+        imagePullPolicy: Always
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
