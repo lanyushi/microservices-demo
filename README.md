@@ -1,6 +1,6 @@
 # Prerequisites
 
-## 1. Create a new 2 nodes EKS cluster (15m)
+## 1. Create a new 2 nodes EKS cluster (20m)
 
 -   Active AWS Cloud account and the following CLI tools installed
     -   [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
@@ -39,7 +39,7 @@ kubectl apply -f "https://raw.githubusercontent.com/nvhoanganh/microservices-dem
   --namespace=sock-shop
 
 # make sure all containers are running properly
-kubectl get pod --namespace=sock-shop
+kubectl wait --for=condition=available --timeout=450s --all deployments -n sock-shop
 
 # get the external IP of the front-end service
 kubectl get service --watch --namespace=sock-shop
