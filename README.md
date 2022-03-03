@@ -34,7 +34,9 @@ kubectl get nodes -o wide
 
 ```bash
 # create new namespace
-kubectl create namespace sock-shop && kubectl apply -f "https://raw.githubusercontent.com/nvhoanganh/microservices-demo/master/deploy/kubernetes/complete-demo.yaml" --namespace=sock-shop
+kubectl create namespace sock-shop && \
+kubectl apply -f "https://raw.githubusercontent.com/nvhoanganh/microservices-demo/master/deploy/kubernetes/complete-demo.yaml" \
+  --namespace=sock-shop
 
 # make sure all containers are running properly
 kubectl get pod --namespace=sock-shop
@@ -43,5 +45,6 @@ kubectl get pod --namespace=sock-shop
 kubectl get service --watch --namespace=sock-shop
 
 ```
-- open `http://<EXTERNAL-IP>` and make sure you can see the application
-![](screenshots/homepage.png)
+
+-   open `http://<EXTERNAL-IP>` and make sure you can see the application
+    ![](screenshots/homepage.png)
