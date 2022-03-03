@@ -24,7 +24,7 @@ kubectl get nodes -o wide
 ## 2. Sign up for Free New Relic One account (5m)
 
 -   Sign up for New Relic One account for free, no Credit Card required [here](https://newrelic.com/signup) and get your Ingest API key by:
-    -   Create new Open https://one.newrelic.com/api-keys
+    -   Open https://one.newrelic.com/api-keys
     -   Click on `Create a key`, select `Ingest - License` and give it a name
     -   Click on 3 dots and select `Copy key`, you will need this during your hands on workshop
 
