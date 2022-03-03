@@ -30,7 +30,7 @@ kubectl get nodes -o wide
 
 ## 3. Deploy Wavesocks application to your cluster (10m)
 
--   Deploy this [e-commerce microservice application](/blob/master/internal-docs/design.md) to the cluster
+-   Deploy this [e-commerce microservice application](https://github.com/nvhoanganh/microservices-demo/blob/master/internal-docs/design.md) to the cluster
 
 ```bash
 # create new namespace
