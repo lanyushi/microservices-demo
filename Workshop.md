@@ -26,12 +26,37 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
  --set pixie-chart.enabled=true \
  --set pixie-chart.deployKey=PIXIE_DEPLOY_KEY \
  --set pixie-chart.clusterName=YOUR_DEMO_NAME
+
+ # make sure all pods are running
+kubectl wait --for=condition=available --timeout=450s --all deployments -n newrelic
 ```
 
 -   Browse your app again and come back to New Relic and select `Explorer > More > Kubernetes`
 
 # Step 2. Add New Relic APM to see Distributed Tracing (5m)
 
+-   you need NR API key (login to NR1, select API Keys from your avatar drop down menu)
+-   replace `YOUR_NR_INGEST_API` with your API key
+
+```bash
+# set up ENV variables
+kubectl set env deployment/front-end \
+    NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
+    NEW_RELIC_APP_NAME=sock-shop-frontend \
+    NEW_RELIC_NO_CONFIG_FILE=true \
+    NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
+    --namespace=sock-shop
+
+# update the image which include NR Agent
+kubectl set image deployment/front-end \
+    front-end=nvhoanganh1909/sock-shop-frontend:step1_AddNR_APM \
+    -n sock-shop
+
+# wait until all pods are in running state
+kubectl get pods -n sock-shop
+```
+
+-   Login to https://one.newrelic.com and select `Explorer > Services - APM`
 # Clean up your Resources
 
 ```bash
