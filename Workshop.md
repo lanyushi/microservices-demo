@@ -57,6 +57,49 @@ kubectl get pods -n sock-shop
 ```
 
 -   Login to https://one.newrelic.com and select `Explorer > Services - APM`
+
+# Step 3. Add New Relic Browser Monitoring (5m)
+
+-   Go to https://one.newrelic.com, click on `Add more data`, search for Browser, select correct Account and click Continue
+-   Select `Copy/paste Javascript code`
+-   Select Yes and search for `sock-shop-frontend` and click on `Enable`
+-   Replace `YOUR_NR_INGEST_API` with your API key
+-   Scroll to the bottom of the provided snippet, you should see something like this below
+
+```javascript
+....
+;NREUM.loader_config={accountID:"3400472",trustKey:"1100964",agentID:"737257148",licenseKey:"NRJS-fd3771cb8dbe078e944",applicationID:"737257148"}
+;NREUM.info={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",licenseKey:"NRJS-fd3771cb8dbe078e944",applicationID:"737257148",sa:1}
+</script>
+```
+
+-   From the above, you will need to get the following information
+    -   NEW_RELIC_ACCOUNT_ID: from `accountID`
+    -   NEW_RELIC_TRUST_KEY: from `trustKey`
+    -   NEW_RELIC_BROWSER_LICENSE_KEY: from `licenseKey`
+    -   NEW_RELIC_APP_ID: from `applicationID`
+
+```bash
+# add the above 4 ENV variables, remember to replace the values you get from above
+kubectl set env deployment/front-end \
+    NEW_RELIC_ACCOUNT_ID=3400472 \
+    NEW_RELIC_TRUST_KEY=1100964 \
+    NEW_RELIC_BROWSER_LICENSE_KEY=NRJS-fd3771cb8dbe078e944 \
+    NEW_RELIC_APP_ID=737257148 \
+    --namespace=sock-shop
+
+# update the image which include NR Agent
+kubectl set image deployment/front-end \
+    front-end=anthonynguyen334/sock-shop-frontend:step2_AddNR_RUM \
+    -n sock-shop
+
+# wait until all pods are in running state
+kubectl get pods -n sock-shop
+```
+
+-   Browser the Weave Socks Shop app
+-   Login to https://one.newrelic.com and select `Explorer > Browser applications`
+
 # Clean up your Resources
 
 ```bash
