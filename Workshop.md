@@ -1,4 +1,4 @@
-# Step 1. Monitor your cluster using Pixie without Instrumentation (5m)
+# Step 1. Monitor your cluster using Pixie without Instrumentation
 
 -   Login to https://one.newrelic.com and click on `Add more data`
 -   Search for `Kubernetes`
@@ -33,7 +33,7 @@ kubectl wait --for=condition=available --timeout=450s --all deployments -n newre
 
 -   Browse your app again and come back to New Relic and select `Explorer > More > Kubernetes`
 
-# Step 2. Add New Relic APM to see Distributed Tracing (5m)
+# Step 2. Add New Relic APM to see Distributed Tracing
 
 -   You need NR API key (login to NR1, select API Keys from your avatar drop down menu)
 -   Replace `YOUR_NR_INGEST_API` with your API key
@@ -58,7 +58,7 @@ kubectl get pods -n sock-shop
 
 -   Login to https://one.newrelic.com and select `Explorer > Services - APM`
 
-# Step 3. Add New Relic Browser Monitoring (5m)
+# Step 3. Add New Relic Browser Monitoring
 
 -   Go to https://one.newrelic.com, click on `Add more data`, search for Browser, select correct Account and click Continue
 -   Select `Copy/paste Javascript code`
