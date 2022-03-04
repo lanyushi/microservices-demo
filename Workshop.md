@@ -69,12 +69,29 @@ kubectl set image deployment/orders \
     orders=anthonynguyen334/sock-shop-ordersjava:apm \
     -n sock-shop
 
+# Add APM for the JAVA shipping service
+# set up up ENV variables
+kubectl set env deployment/shipping \
+    JAVA_OPTS="-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar" \
+    NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
+    NEW_RELIC_LOG_FILE_NAME=STDOUT \
+    NEW_RELIC_APP_NAME=sock-shop-shipping \
+    NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
+    --namespace=sock-shop
+
+# Add APM for the JAVA shipping service
+# deploy this version of the shipping: https://github.com/nvhoanganh/shipping/tree/Add-APM-Agent
+kubectl set image deployment/shipping \
+    shipping=anthonynguyen334/sock-shop-shipping:apm \
+    -n sock-shop
+
 # wait until all pods are in running state
 kubectl get pods -n sock-shop
 ```
 
 -   Login to https://one.newrelic.com and select `Explorer > Services - APM`
-![](screenshots/apm.png)
+    ![](screenshots/apm.png)
+
 # Step 3. Add New Relic Browser Monitoring
 
 -   Go to https://one.newrelic.com, click on `Add more data`, search for Browser, select correct Account and click Continue
