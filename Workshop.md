@@ -33,13 +33,14 @@ kubectl wait --for=condition=available --timeout=450s --all deployments -n newre
 
 -   Browse your app again and come back to New Relic and select `Explorer > More > Kubernetes`
 
-# Step 2. Add New Relic APM to see Distributed Tracing
+# Step 2. Add New Relic APM to see Distributed Tracing for critical transactions
 
 -   You need NR API key (login to NR1, select API Keys from your avatar drop down menu)
 -   Replace `YOUR_NR_INGEST_API` with your API key
 
 ```bash
-# set up ENV variables
+# Add APM for the NodeJS front-end
+# set up up ENV variables
 kubectl set env deployment/front-end \
     NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
     NEW_RELIC_APP_NAME=sock-shop-frontend \
@@ -52,12 +53,28 @@ kubectl set image deployment/front-end \
     front-end=nvhoanganh1909/sock-shop-frontend:step1_AddNR_APM \
     -n sock-shop
 
+# Add APM for the JAVA orders service
+# set up up ENV variables
+kubectl set env deployment/orders \
+    JAVA_OPTS="-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar" \
+    NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
+    NEW_RELIC_LOG_FILE_NAME=STDOUT \
+    NEW_RELIC_APP_NAME=sock-shop-orders \
+    NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
+    --namespace=sock-shop
+
+# Add APM for the JAVA shipping service
+# deploy this version of the orders: https://github.com/nvhoanganh/orders/tree/Add-APM-Agent
+kubectl set image deployment/orders \
+    orders=anthonynguyen334/sock-shop-ordersjava:apm \
+    -n sock-shop
+
 # wait until all pods are in running state
 kubectl get pods -n sock-shop
 ```
 
 -   Login to https://one.newrelic.com and select `Explorer > Services - APM`
-
+![](screenshots/apm.png)
 # Step 3. Add New Relic Browser Monitoring
 
 -   Go to https://one.newrelic.com, click on `Add more data`, search for Browser, select correct Account and click Continue
