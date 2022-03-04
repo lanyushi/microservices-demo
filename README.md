@@ -15,7 +15,7 @@ aws configure
 eksctl create cluster --name pixiecluster --region us-east-1
 
 # download correct kubeconfig
-eksctl utils write-kubeconfig --cluster=pixiecluster
+eksctl utils write-kubeconfig --cluster=pixiecluster --region us-east-1
 
 # confirm can connect to the cluster
 kubectl get nodes -o wide
