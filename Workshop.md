@@ -7,7 +7,7 @@
 -   Select `Helm 3` from th drop down and copy the provided command
 
 ```bash
-# run the command
+# run the command, make sure you replace LICENSE_KEY, YOUR_DEMO_NAME, PIXIE_API_KEY and PIXIE_DEPLOY_KEY
 kubectl apply -f https://download.newrelic.com/install/kubernetes/pixie/latest/px.dev_viziers.yaml && \
 kubectl apply -f https://download.newrelic.com/install/kubernetes/pixie/latest/olm_crd.yaml && \
 helm repo add newrelic https://helm-charts.newrelic.com && helm repo update && \
@@ -35,8 +35,8 @@ kubectl wait --for=condition=available --timeout=450s --all deployments -n newre
 
 # Step 2. Add New Relic APM to see Distributed Tracing (5m)
 
--   you need NR API key (login to NR1, select API Keys from your avatar drop down menu)
--   replace `YOUR_NR_INGEST_API` with your API key
+-   You need NR API key (login to NR1, select API Keys from your avatar drop down menu)
+-   Replace `YOUR_NR_INGEST_API` with your API key
 
 ```bash
 # set up ENV variables
