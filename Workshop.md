@@ -47,7 +47,7 @@ kubectl set env deployment/front-end \
     NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
     --namespace=sock-shop
 
-# update the image which include NR Agent
+# deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step-1---add-NR-APM
 kubectl set image deployment/front-end \
     front-end=nvhoanganh1909/sock-shop-frontend:step1_AddNR_APM \
     -n sock-shop
@@ -88,7 +88,7 @@ kubectl set env deployment/front-end \
     NEW_RELIC_APP_ID=737257148 \
     --namespace=sock-shop
 
-# update the image which include NR Agent
+# deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step2-add-browser-monitoring
 kubectl set image deployment/front-end \
     front-end=anthonynguyen334/sock-shop-frontend:step2_AddNR_RUM \
     -n sock-shop
@@ -99,6 +99,58 @@ kubectl get pods -n sock-shop
 
 -   Browser the Weave Socks Shop app
 -   Login to https://one.newrelic.com and select `Explorer > Browser applications`
+
+# Step 4. Add Logs In Context
+
+-   To enable Logs in Context
+
+```bash
+# deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step3-add-logs-in-Context
+kubectl set image deployment/front-end \
+    front-end=anthonynguyen334/sock-shop-frontend:step3_AddNR_LogsInContext \
+    -n sock-shop
+
+# wait until all pods are in running state
+kubectl get pods -n sock-shop
+```
+
+-   Browser the Weave Socks Shop app
+-   Login to https://one.newrelic.com and select `Explorer > Services - APM` and select `Sock shop frontend`
+-   Select `Logs`
+
+# Step 5. View Errors in Errors Inbox
+
+-   To enable Logs in Context
+
+```bash
+# deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step-4-View-Errors-in-Error-Inbox
+kubectl set image deployment/front-end \
+    front-end=anthonynguyen334/sock-shop-frontend:step4_AddNR_Errors \
+    -n sock-shop
+
+# Set Repository and commit information
+kubectl set env deployment/front-end \
+    NEW_RELIC_METADATA_REPOSITORY_URL=https://github.com/nvhoanganh/front-end.git \
+    NEW_RELIC_METADATA_COMMIT=68c70ed16c951f73b3380c928deca2a8b3888698 \
+    --namespace=sock-shop
+
+# wait until all pods are in running state
+kubectl get pods -n sock-shop
+```
+
+-   Generate some error by:
+    -   Navigating to the Weave Socks Shop app
+    -   Add item to the cart
+    -   Go to the cart and update the Quantity to 20, click on `Update basket`
+    -   Note: if you look at the Network tab on your browser you will see the Update call failed
+-   Login to https://one.newrelic.com, click on `Explorer > Create a workload`
+-   Enter name of workload `Sock shop on AWS`
+-   Search for `sock-shop`
+-   Add `sock-shop-frontend-aws (Service - APM)` and `sock-shop-frontend-aws (Browser application)`
+-   Click on `Create a workload`
+-   Go back to https://one.newrelic.com and Select `Explorer > Errors Inbox` and select `Sock shop on AWS` from the drop down
+-   Click on the error
+-   Note: if you clone this repository https://github.com/nvhoanganh/front-end and Open it with VSCode and click on `Open in IDE`, it should automatically jump to the line of code
 
 # Clean up your Resources
 
