@@ -56,7 +56,7 @@ kubectl set image deployment/front-end \
 # Add APM for the JAVA orders service
 # set up up ENV variables
 kubectl set env deployment/orders \
-    JAVA_OPTS="-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar" \
+    JAVA_OPTS="-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar -Dlogging.level.org.springframework=DEBUG" \
     NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
     NEW_RELIC_LOG_FILE_NAME=STDOUT \
     NEW_RELIC_APP_NAME=sock-shop-orders \
