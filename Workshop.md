@@ -89,6 +89,7 @@ kubectl set image deployment/shipping \
 kubectl get pods -n sock-shop
 ```
 
+-   Generate some traffic: browse the app again, add an item in the card, then click on the Cart to view it
 -   Login to https://one.newrelic.com and select `Explorer > Services - APM`
     ![](screenshots/apm.png)
 
@@ -154,7 +155,7 @@ kubectl get pods -n sock-shop
 
 # Step 5. View Errors in Errors Inbox
 
--   To enable Logs in Context
+-   To view Errors in Errors Inbox
 
 ```bash
 # deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step-4-View-Errors-in-Error-Inbox
