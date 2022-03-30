@@ -19,6 +19,9 @@ eksctl utils write-kubeconfig --cluster=pixiecluster --region us-east-1
 
 # confirm can connect to the cluster
 kubectl get nodes -o wide
+
+# install helm CLI (https://helm.sh/docs/intro/install/)
+brew install helm
 ```
 
 ## 2. Sign up for Free New Relic One account (5m)
