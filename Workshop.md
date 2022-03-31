@@ -1,3 +1,15 @@
+# New Relic Instant Observability workshop
+
+Duration: **1.5 hours**
+
+## Outcomes
+
+-   Start observing your k8s application in minutes, without instrumentation
+-   Enable Distributed Traceing with New Relic APM
+-   Monitor Real User Experience using Browser Monitoring
+-   View application Errors in New Relic Errors Inbox
+-   View Application Logs in Context
+
 # Step 1. Monitor your cluster using Pixie without Instrumentation
 
 -   Login to https://one.newrelic.com and click on `Add more data`
@@ -189,9 +201,6 @@ kubectl get pods -n sock-shop
 # Clean up your Resources
 
 ```bash
-# delete the Azure AKS cluster
-az aks delete --name pixiecluster --resource-group pixiedemo
-
 # delete the AWS EKS cluster
 eksctl delete cluster --name pixiecluster --region us-east-1
 ```
