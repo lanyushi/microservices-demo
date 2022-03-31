@@ -4,7 +4,7 @@ Duration: **1.5 hours**
 
 ## Outcomes
 
--   Start observing your k8s application in minutes, without instrumentation
+-   Start observing your [k8s application](https://github.com/microservices-demo/microservices-demo/blob/master/internal-docs/design.md) in minutes, without instrumentation
 -   Enable Distributed Traceing with New Relic APM
 -   Monitor Real User Experience using Browser Monitoring
 -   View application Errors in New Relic Errors Inbox
