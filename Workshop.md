@@ -47,14 +47,23 @@ kubectl wait --for=condition=available --timeout=450s --all deployments -n newre
 
 # Step 2. Add New Relic APM to see Distributed Tracing for critical transactions
 
--   You need NR API key (login to NR1, select API Keys from your avatar drop down menu)
--   Replace `YOUR_NR_INGEST_API` with your API key
+-   You need NR Ingest key (login to NR1, select API Keys from your avatar drop down menu)
+-   Replace `YOUR_NR_INGEST_API` with your Ingest key
 
 ```bash
+# set local variable
+# mac/ linux
+YOUR_NR_INGEST_API=<Ingest Key>
+# windows
+set YOUR_NR_INGEST_API=<Ingest Key>
+
+#ensure the variable is set
+echo $YOUR_NR_INGEST_API
+
 # Add APM for the NodeJS front-end
 # set up up ENV variables
 kubectl set env deployment/front-end \
-    NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
+    NEW_RELIC_LICENSE_KEY=$YOUR_NR_INGEST_API \
     NEW_RELIC_APP_NAME=sock-shop-frontend \
     NEW_RELIC_NO_CONFIG_FILE=true \
     NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
@@ -69,7 +78,7 @@ kubectl set image deployment/front-end \
 # set up up ENV variables
 kubectl set env deployment/orders \
     JAVA_OPTS="-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar -Dlogging.level.org.springframework=DEBUG" \
-    NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
+    NEW_RELIC_LICENSE_KEY=$YOUR_NR_INGEST_API \
     NEW_RELIC_LOG_FILE_NAME=STDOUT \
     NEW_RELIC_APP_NAME=sock-shop-orders \
     NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
@@ -85,7 +94,7 @@ kubectl set image deployment/orders \
 # set up up ENV variables
 kubectl set env deployment/shipping \
     JAVA_OPTS="-Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false -javaagent:/usr/src/app/newrelic.jar" \
-    NEW_RELIC_LICENSE_KEY=YOUR_NR_INGEST_API \
+    NEW_RELIC_LICENSE_KEY=$YOUR_NR_INGEST_API \
     NEW_RELIC_LOG_FILE_NAME=STDOUT \
     NEW_RELIC_APP_NAME=sock-shop-shipping \
     NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
@@ -102,15 +111,15 @@ kubectl get pods -n sock-shop
 ```
 
 -   Generate some traffic: browse the app again, add an item in the card, then click on the Cart to view it
--   Login to https://one.newrelic.com and select `Explorer > Services - APM`
+-   Login to https://one.newrelic.com and select `Explorer > Services - APM > sock-shop-frontend`
     ![](screenshots/apm.png)
 
 # Step 3. Add New Relic Browser Monitoring
 
 -   Go to https://one.newrelic.com, click on `Add more data`, search for Browser, select correct Account and click Continue
 -   Select `Copy/paste Javascript code`
--   Select Yes and search for `sock-shop-frontend` and click on `Enable`
--   Replace `YOUR_NR_INGEST_API` with your API key
+-   Leave all of the default options
+-   For Name your app: Select Yes and search for `sock-shop-frontend` and click on `Enable`
 -   Scroll to the bottom of the provided snippet, you should see something like this below
 
 ```javascript
