@@ -214,6 +214,19 @@ kubectl get pods -n sock-shop
 -   Go back to https://one.newrelic.com and Select `Explorer > Errors Inbox` and select `Sock shop on AWS` from the drop down
 -   Click on the error
 
+# Step 6. Load test your cluster
+
+```bash
+# install k6 (https://k6.io/docs/getting-started/installation/)
+brew install k6
+
+# set the public IP of the front-end
+PUBLIC_IP=<Public IP>
+
+# Run the load tests
+k6 run -e PUBLIC_IP=$PUBLIC_IP loadtest.js
+```
+
 # Clean up your Resources
 
 ```bash
