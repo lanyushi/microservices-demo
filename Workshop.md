@@ -138,15 +138,17 @@ kubectl get pods -n sock-shop
 ```bash
 # save the browser license key
 # mac/ linux
-YOUR_NR_BROWSER_INGEST_API=<Ingest Key>
-# windows
-set YOUR_NR_BROWSER_INGEST_API=<Ingest Key>
+NEW_RELIC_BROWSER_LICENSE_KEY=<Browser Ingest Key>
+NEW_RELIC_ACCOUNT_ID=<Account Id>
+NEW_RELIC_TRUST_KEY=<Trust Key>
+NEW_RELIC_APP_ID=<App ID>
+
 
 kubectl set env deployment/front-end \
-    NEW_RELIC_ACCOUNT_ID=3400472 \
-    NEW_RELIC_TRUST_KEY=1100964 \
+    NEW_RELIC_ACCOUNT_ID=$NEW_RELIC_ACCOUNT_ID \
+    NEW_RELIC_TRUST_KEY=$NEW_RELIC_TRUST_KEY \
     NEW_RELIC_BROWSER_LICENSE_KEY=$YOUR_NR_BROWSER_INGEST_API \
-    NEW_RELIC_APP_ID=737257148 \
+    NEW_RELIC_APP_ID=$NEW_RELIC_APP_ID \
     --namespace=sock-shop
 
 # deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step2-add-browser-monitoring
