@@ -136,11 +136,16 @@ kubectl get pods -n sock-shop
     -   NEW_RELIC_APP_ID: from `applicationID`
 
 ```bash
-# add the above 4 ENV variables, remember to replace the values you get from above
+# save the browser license key
+# mac/ linux
+YOUR_NR_BROWSER_INGEST_API=<Ingest Key>
+# windows
+set YOUR_NR_BROWSER_INGEST_API=<Ingest Key>
+
 kubectl set env deployment/front-end \
     NEW_RELIC_ACCOUNT_ID=3400472 \
     NEW_RELIC_TRUST_KEY=1100964 \
-    NEW_RELIC_BROWSER_LICENSE_KEY=NRJS-fd3771cb8dbe078e944 \
+    NEW_RELIC_BROWSER_LICENSE_KEY=$YOUR_NR_BROWSER_INGEST_API \
     NEW_RELIC_APP_ID=737257148 \
     --namespace=sock-shop
 
