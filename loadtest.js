@@ -19,9 +19,9 @@ export const options = {
     { target: 2, duration: '1m' },
     { target: 0, duration: '1m' },
   ],
-  thresholds: {
-    requests: ['count < 100'],
-  },
+  // thresholds: {
+  //   requests: ['count < 100'],
+  // },
 };
 
 export function setup() {
