@@ -194,7 +194,7 @@ kubectl set image deployment/front-end \
 # Set Repository and commit information
 kubectl set env deployment/front-end \
     NEW_RELIC_METADATA_REPOSITORY_URL=https://github.com/nvhoanganh/front-end.git \
-    NEW_RELIC_METADATA_COMMIT=68c70ed16c951f73b3380c928deca2a8b3888698 \
+    NEW_RELIC_METADATA_COMMIT=6e1aa88741db79728e7071d4fbf7c39192038f48 \
     --namespace=sock-shop
 
 # wait until all pods are in running state
