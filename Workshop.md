@@ -20,12 +20,10 @@ Duration: **1.5 hours**
 
 ```bash
 # run the command, make sure you replace LICENSE_KEY, YOUR_DEMO_NAME, PIXIE_API_KEY and PIXIE_DEPLOY_KEY
-kubectl apply -f https://download.newrelic.com/install/kubernetes/pixie/latest/px.dev_viziers.yaml && \
-kubectl apply -f https://download.newrelic.com/install/kubernetes/pixie/latest/olm_crd.yaml && \
 helm repo add newrelic https://helm-charts.newrelic.com && helm repo update && \
 kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newrelic/nri-bundle \
- --set global.licenseKey=LICENSE_KEY \
- --set global.cluster=YOUR_DEMO_NAME \
+ --set global.licenseKey=LICENSEKEY \
+ --set global.cluster=pixiedemo \
  --namespace=newrelic \
  --set newrelic-infrastructure.privileged=true \
  --set global.lowDataMode=true \
@@ -34,10 +32,11 @@ kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newre
  --set prometheus.enabled=true \
  --set logging.enabled=true \
  --set newrelic-pixie.enabled=true \
- --set newrelic-pixie.apiKey=PIXIE_API_KEY \
+ --set newrelic-pixie.apiKey=PIXIEAPIKEY \
  --set pixie-chart.enabled=true \
- --set pixie-chart.deployKey=PIXIE_DEPLOY_KEY \
- --set pixie-chart.clusterName=YOUR_DEMO_NAME
+ --set pixie-chart.deployKey=PXDEPLOYKEY \
+ --set pixie-chart.clusterName=pixiedemo
+
 
  # make sure all pods are running
 kubectl wait --for=condition=available --timeout=450s --all deployments -n newrelic
@@ -143,6 +142,12 @@ NEW_RELIC_ACCOUNT_ID=<Account Id>
 NEW_RELIC_TRUST_KEY=<Trust Key>
 NEW_RELIC_APP_ID=<App ID>
 
+# windows
+set NEW_RELIC_BROWSER_LICENSE_KEY NRJS-fd3771cb8dbe078e944
+set NEW_RELIC_ACCOUNT_ID 3400472
+set NEW_RELIC_TRUST_KEY 1100964
+set NEW_RELIC_APP_ID 724351781
+
 
 kubectl set env deployment/front-end \
     NEW_RELIC_ACCOUNT_ID=$NEW_RELIC_ACCOUNT_ID \
@@ -168,6 +173,12 @@ kubectl get pods -n sock-shop
 -   To enable Logs in Context
 
 ```bash
+# update LOG_PARSER env to cri
+kubectl set env DaemonSet/newrelic-bundle-newrelic-logging LOG_PARSER=cri --namespace=newrelic
+
+# force daemonset restart
+kubectl rollout restart DaemonSet newrelic-bundle-newrelic-logging -n newrelic
+
 # deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step3-add-logs-in-Context
 kubectl set image deployment/front-end \
     front-end=anthonynguyen334/sock-shop-frontend:AddNR_LogsInContext \
@@ -209,7 +220,7 @@ kubectl get pods -n sock-shop
 -   Generate some error by:
     -   Navigating to the Weave Socks Shop app
     -   Add item to the cart
-    -   Go to the cart and update the Quantity to 20, click on `Update basket`
+    -   Go to the cart and update the Quantity to 21, click on `Update basket`
     -   Note: if you look at the Network tab on your browser you will see the Update call failed
 -   Go back to https://one.newrelic.com and Select `Explorer > Errors Inbox` and select `Sock shop on AWS` from the drop down
 -   Click on the error
@@ -230,6 +241,15 @@ k6 run -e PUBLIC_IP=$PUBLIC_IP loadtest.js
 # Clean up your Resources
 
 ```bash
-# delete the AWS EKS cluster
+# delete newrelic and pixie
+helm uninstall -n newrelic newrelic-bundle
+set helmcurrent=(helm list -n newrelic | tail -1 | awk '{ print $1 }')
+helm uninstall "$helmcurrent" -n newrelic
+kubectl delete -f https://raw.githubusercontent.com/pixie-labs/pixie/main/k8s/vizier_deps/base/nats/nats_crd.yaml
+kubectl delete namespace newrelic
+helm repo update
+
+# OR simply delete the AWS EKS cluster
 eksctl delete cluster --name pixiecluster --region us-east-1
+
 ```
