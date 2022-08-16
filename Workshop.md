@@ -199,7 +199,7 @@ kubectl get pods -n sock-shop
 ```bash
 # deploy this version of the front end: https://github.com/nvhoanganh/front-end/tree/step-4-View-Errors-in-Error-Inbox
 kubectl set image deployment/front-end \
-    front-end=anthonynguyen334/sock-shop-frontend:AddNR_Errors \
+    front-end=anthonynguyen334/sock-shop-frontend:AddNewRelic_Errors \
     -n sock-shop
 
 # Set Repository and commit information
