@@ -252,7 +252,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: front-end
-  namespace: default
+  namespace: sock-shop
 spec:
   replicas: 1
   selector:
@@ -309,7 +309,7 @@ metadata:
         prometheus.io/scrape: 'true'
   labels:
     name: front-end
-  namespace: default
+  namespace: sock-shop
 spec:
   type: LoadBalancer
   ports:
@@ -394,7 +394,7 @@ metadata:
   name: orders-db
   labels:
     name: orders-db
-  namespace: sock-shop
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -436,7 +436,7 @@ metadata:
   name: orders-db
   labels:
     name: orders-db
-  namespace: sock-shop
+  namespace: default
 spec:
   ports:
     # the port that this service should serve on
